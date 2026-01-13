@@ -1,14 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const auth = require("../middleware/auth.middleware");
+import { Router } from "express";
+const router = Router();
+import auth from "../middleware/auth.middleware.js";
 
-const spo2 = require("../controllers/vitals/spo2.controller");
-const ecg = require("../controllers/vitals/ecg.controller");
+
+import { createECG, getECGHistory } from "../controllers/vitals/ecg.controlle.js";
 
 // ECG
-router.post("/ecg", auth, ecg.createECG);
-router.get("/ecg", auth, ecg.getECGHistory);
+router.post("/ecg", auth, createECG);
+router.get("/ecg", auth, getECGHistory);
 
 
 
-module.exports = router;
+export default router;

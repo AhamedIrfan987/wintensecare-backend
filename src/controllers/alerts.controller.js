@@ -1,17 +1,15 @@
-const prisma = require('../config/prisma');
+import prisma from '../config/prisma.js';
 
-// GET all alerts for user
-async function getAlerts(req, res) {
+export async function getAlerts(req, res) {
   const alerts = await prisma.alert.findMany({
     where: { userId: req.user.id },
     orderBy: { createdAt: 'desc' },
   });
 
-  res.json(alerts);
+  return res.json(alerts);
 }
 
-// ACK alert
-async function acknowledgeAlert(req, res) {
+export async function acknowledgeAlert(req, res) {
   const { id } = req.params;
 
   const alert = await prisma.alert.findFirst({
@@ -30,10 +28,5 @@ async function acknowledgeAlert(req, res) {
     data: { acknowledged: true },
   });
 
-  res.json({ message: 'Alert acknowledged' });
+  return res.json({ message: 'Alert acknowledged' });
 }
-
-module.exports = {
-  getAlerts,
-  acknowledgeAlert,
-};

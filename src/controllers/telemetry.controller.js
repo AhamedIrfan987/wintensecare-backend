@@ -1,6 +1,5 @@
-const prisma = require('../config/prisma');
-const { evaluateAlerts } = require('../services/alert.service');
-
+import prisma from '../config/prisma.js';
+import { evaluateAlerts } from '../services/alert.service.js';
 
 // ---------- CREATE TELEMETRY ----------
 async function createTelemetry(req, res) {
@@ -163,7 +162,7 @@ async function getTelemetryHistory(req, res) {
 }
 
 // ---------- EXPORTS ----------
-module.exports = {
+export {
   createTelemetry,
   getTelemetry,
   getTelemetryHistory,

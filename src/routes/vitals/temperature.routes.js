@@ -1,13 +1,11 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
-const auth = require("../../middlewares/auth.middleware")
-const {
-  createTemperature,
-  getTemperatureHistory
-} = require("../../controllers/vitals/temperature.controller")
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+
+import { createTemperature, getTemperatureHistory } from "../../controllers/vitals/temperature.controller.js";
 
 router.post("/temperature", auth, createTemperature);
 router.get("/temperature", auth, getTemperatureHistory);
 
-module.exports = router;
+export default router;

@@ -1,10 +1,15 @@
 import express from "express";
-import { ingestSpO2 } from "../../controllers/vitals/spo2.controller.js";
-import { authMiddleware } from "../../middlewares/auth.middleware.js";
+import {
+  ingestSpO2,
+  getSpO2Raw,
+  getSpO2Summary
+} from "../../controllers/vitals/spo2.controller.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-// Raw SpO2 data from watch / phone
 router.post("/", authMiddleware, ingestSpO2);
+router.get("/raw", authMiddleware, getSpO2Raw);
+router.get("/summary", authMiddleware, getSpO2Summary);
 
 export default router;

@@ -1,6 +1,7 @@
-const prisma = require('../config/prisma');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import prisma from '../config/prisma.js';
+
 
 async function register(req, res) {
   const { identifier, password, confirmPassword } = req.body;
@@ -94,9 +95,10 @@ function isPhone(value) {
   return /^\+?[0-9]{10,15}$/.test(value);
 }
 
-
-module.exports = {
+export default {
   register,
   login,
   logout,
 };
+
+export { register, login, logout };

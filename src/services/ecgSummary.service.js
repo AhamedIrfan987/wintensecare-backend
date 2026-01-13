@@ -1,6 +1,6 @@
 // backend/src/services/ecgSummary.service.js
 
-exports.computeECGSummary = (signal, samplingRate) => {
+export function computeECGSummary(signal, samplingRate) {
   if (!Array.isArray(signal) || signal.length < samplingRate) {
     return {
       avgHR: 0,
