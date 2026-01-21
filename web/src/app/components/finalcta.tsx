@@ -1,99 +1,109 @@
-// app/components/FinalCTA.tsx
 "use client";
 
 import React from "react";
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Button, 
-  Stack, 
-  Link, 
-  useTheme,
-  Fade,
+import {
+  Container,
+  Typography,
+  Button,
+  Stack,
+  Link,
   Paper,
-  useMediaQuery
+  Fade,
+  useMediaQuery,
 } from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
 
-const FinalCTA: React.FC = () => {
+/* ---------------- styled layout ---------------- */
+
+const Section = styled("section")(({ theme }) => ({
+  position: "relative",
+  overflow: "hidden",
+  paddingTop: theme.spacing(12),
+  paddingBottom: theme.spacing(12),
+  background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
+
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    background:
+      "linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)",
+  },
+
+  [theme.breakpoints.down("md")]: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+}));
+
+const DecorCircle = styled("div")<{
+  size: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+  opacity: number;
+}>(({ size, top, right, bottom, left, opacity }) => ({
+  position: "absolute",
+  width: size,
+  height: size,
+  borderRadius: "50%",
+  top,
+  right,
+  bottom,
+  left,
+  opacity,
+  background:
+    "linear-gradient(45deg, rgba(0,0,0,0.02), rgba(0,0,0,0.05))",
+}));
+
+const Card = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(6),
+  background:
+    "linear-gradient(145deg, rgba(255,255,255,0.9), rgba(248,249,250,0.9))",
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(255,255,255,0.8)",
+  borderRadius: theme.shape.borderRadius * 2,
+  boxShadow:
+    "0 20px 40px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1)",
+  position: "relative",
+  zIndex: 1,
+
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(4),
+  },
+}));
+
+/* ---------------- component ---------------- */
+
+const FinalCTA = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Fade in={true} timeout={1000}>
-      <Box
-        component="section"
-        sx={{
-          py: { xs: 8, md: 12 },
-          backgroundColor: theme.palette.background.paper,
-          backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-          position: 'relative',
-          overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '1px',
-            background: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent)',
-          }
-        }}
-      >
-        {/* Decorative elements */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: -100,
-            right: -100,
-            width: 300,
-            height: 300,
-            borderRadius: '50%',
-            background: 'linear-gradient(45deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.05) 100%)',
-            opacity: 0.6,
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: -50,
-            left: -50,
-            width: 200,
-            height: 200,
-            borderRadius: '50%',
-            background: 'linear-gradient(45deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.05) 100%)',
-            opacity: 0.4,
-          }}
-        />
+    <Fade in timeout={1000}>
+      <Section>
+        {/* Decorative circles */}
+        <DecorCircle size={300} top={-100} right={-100} opacity={0.6} />
+        <DecorCircle size={200} bottom={-50} left={-50} opacity={0.4} />
 
         <Container maxWidth="lg">
-          <Paper
-            elevation={0}
-            sx={{
-              p: { xs: 4, md: 6 },
-              backgroundColor: 'transparent',
-              backgroundImage: 'linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255,255,255,0.8)',
-              borderRadius: 4,
-              position: 'relative',
-              zIndex: 1,
-              boxShadow: '0 20px 40px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1)',
-            }}
-          >
+          <Card elevation={0}>
             <Container maxWidth="md">
               {/* Headline */}
-              <Typography 
-                variant={isMobile ? "h4" : "h3"} 
-                component="h2" 
+              <Typography
+                variant={isMobile ? "h4" : "h3"}
+                fontWeight={700}
                 gutterBottom
                 sx={{
-                  fontWeight: 700,
-                  background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  letterSpacing: '-0.5px',
+                  background:
+                    "linear-gradient(135deg, #2c3e50, #34495e)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  letterSpacing: "-0.5px",
                   lineHeight: 1.2,
                 }}
               >
@@ -101,28 +111,28 @@ const FinalCTA: React.FC = () => {
               </Typography>
 
               {/* Subtext */}
-              <Typography 
-                variant={isMobile ? "body1" : "h6"} 
-                component="p" 
-                sx={{ 
+              <Typography
+                variant={isMobile ? "body1" : "h6"}
+                sx={{
                   mb: 4,
-                  color: 'text.secondary',
+                  color: "text.secondary",
                   lineHeight: 1.6,
-                  maxWidth: '600px',
-                  mx: 'auto',
+                  maxWidth: 600,
+                  margin: "0 auto",
                   opacity: 0.8,
                 }}
               >
-                Join thousands of families and professionals who trust us to keep their loved ones safe, healthy, and connected.
+                Join thousands of families and professionals who trust us to
+                keep their loved ones safe, healthy, and connected.
               </Typography>
 
-              {/* Call-to-Action Buttons */}
+              {/* CTA Buttons */}
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={3}
                 justifyContent="center"
                 alignItems="center"
-                sx={{ mb: 3 }}
+                mb={3}
               >
                 <Button
                   variant="contained"
@@ -131,18 +141,18 @@ const FinalCTA: React.FC = () => {
                   sx={{
                     px: 4,
                     py: 1.5,
-                    fontSize: '1.1rem',
+                    fontSize: "1.1rem",
                     fontWeight: 600,
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    border: 'none',
                     borderRadius: 3,
-                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
-                    transition: 'all 0.3s ease',
                     minWidth: 200,
-                    '&:hover': {
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 8px 25px rgba(102, 126, 234, 0.4)',
-                      background: 'linear-gradient(135deg, #5a6fd8 0%, #6a42a0 100%)',
+                    background:
+                      "linear-gradient(135deg, #667eea, #764ba2)",
+                    boxShadow:
+                      "0 4px 15px rgba(102,126,234,0.3)",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow:
+                        "0 8px 25px rgba(102,126,234,0.4)",
                     },
                   }}
                 >
@@ -156,20 +166,13 @@ const FinalCTA: React.FC = () => {
                   sx={{
                     px: 4,
                     py: 1.5,
-                    fontSize: '1.1rem',
+                    fontSize: "1.1rem",
                     fontWeight: 600,
-                    borderColor: 'text.secondary',
-                    color: 'text.primary',
                     borderRadius: 3,
-                    borderWidth: 2,
                     minWidth: 200,
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      borderColor: 'primary.main',
-                      color: 'primary.main',
-                      borderWidth: 2,
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+                    borderWidth: 2,
+                    "&:hover": {
+                      transform: "translateY(-2px)",
                     },
                   }}
                 >
@@ -177,83 +180,57 @@ const FinalCTA: React.FC = () => {
                 </Button>
               </Stack>
 
-              {/* Additional Links */}
+              {/* Links */}
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
                 justifyContent="center"
                 alignItems="center"
-                sx={{ mt: 2 }}
+                mt={2}
               >
                 <Link
                   href="#contact-sales"
                   underline="none"
-                  sx={{
-                    color: 'text.secondary',
-                    fontWeight: 500,
-                    fontSize: '0.95rem',
-                    transition: 'all 0.3s ease',
-                    px: 2,
-                    py: 1,
-                    borderRadius: 2,
-                    '&:hover': {
-                      color: 'primary.main',
-                      backgroundColor: 'rgba(0,0,0,0.02)',
-                      transform: 'translateY(-1px)',
-                    },
-                  }}
+                  sx={{ color: "text.secondary", fontWeight: 500 }}
                 >
                   Contact Sales for Enterprises
                 </Link>
-                <Box
-                  sx={{
-                    width: '4px',
-                    height: '4px',
-                    borderRadius: '50%',
-                    backgroundColor: 'text.secondary',
-                    opacity: 0.5,
-                    display: { xs: 'none', sm: 'block' },
-                  }}
-                />
+
+                {!isMobile && (
+                  <span
+                    style={{
+                      width: 4,
+                      height: 4,
+                      borderRadius: "50%",
+                      background: theme.palette.text.secondary,
+                      opacity: 0.5,
+                    }}
+                  />
+                )}
+
                 <Link
                   href="#demo"
                   underline="none"
-                  sx={{
-                    color: 'text.secondary',
-                    fontWeight: 500,
-                    fontSize: '0.95rem',
-                    transition: 'all 0.3s ease',
-                    px: 2,
-                    py: 1,
-                    borderRadius: 2,
-                    '&:hover': {
-                      color: 'primary.main',
-                      backgroundColor: 'rgba(0,0,0,0.02)',
-                      transform: 'translateY(-1px)',
-                    },
-                  }}
+                  sx={{ color: "text.secondary", fontWeight: 500 }}
                 >
                   Schedule a Demo
                 </Link>
               </Stack>
 
-              {/* Trust indicator */}
-              <Box sx={{ textAlign: 'center', mt: 4 }}>
-                <Typography 
-                  variant="caption" 
-                  sx={{ 
-                    color: 'text.secondary',
-                    opacity: 0.7,
-                    fontSize: '0.8rem',
-                  }}
-                >
-                  Trusted by 10,000+ families worldwide
-                </Typography>
-              </Box>
+              {/* Trust */}
+              <Typography
+                variant="caption"
+                display="block"
+                align="center"
+                mt={4}
+                sx={{ opacity: 0.7 }}
+              >
+                Trusted by 10,000+ families worldwide
+              </Typography>
             </Container>
-          </Paper>
+          </Card>
         </Container>
-      </Box>
+      </Section>
     </Fade>
   );
 };

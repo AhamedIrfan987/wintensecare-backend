@@ -1,13 +1,38 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
+export type MetricValueSize = "small" | "medium" | "large";
+
 type MetricValueProps = {
   value: string | number;
+  unit?: string;
   label?: string;
   sub?: string;
+  size?: MetricValueSize;
 };
 
-export function MetricValue({ value, label, sub }: MetricValueProps) {
+export function MetricValue({
+  value,
+  unit,
+  label,
+  sub,
+  size = "medium",
+}: MetricValueProps) {
+  const sizeMap = {
+    small: {
+      value: "h6",
+      unit: "caption",
+    },
+    medium: {
+      value: "h5",
+      unit: "body2",
+    },
+    large: {
+      value: "h4",
+      unit: "body1",
+    },
+  } as const;
+
   return (
     <Box
       sx={{
@@ -15,14 +40,26 @@ export function MetricValue({ value, label, sub }: MetricValueProps) {
         lineHeight: 1.2,
       }}
     >
-      {/* VALUE */}
-      <Typography
-        variant="h5"
-        fontWeight={700}
-        noWrap
-      >
-        {value}
-      </Typography>
+      {/* VALUE + UNIT */}
+      <Box display="flex" alignItems="baseline" justifyContent="center" gap={0.5}>
+        <Typography
+          variant={sizeMap[size].value}
+          fontWeight={700}
+          noWrap
+        >
+          {value}
+        </Typography>
+
+        {unit && (
+          <Typography
+            variant={sizeMap[size].unit}
+            color="text.secondary"
+            noWrap
+          >
+            {unit}
+          </Typography>
+        )}
+      </Box>
 
       {/* LABEL */}
       {label && (
@@ -43,7 +80,8 @@ export function MetricValue({ value, label, sub }: MetricValueProps) {
           color="text.disabled"
           sx={{
             mt: 0.75,
-            maxWidth: 140,
+            maxWidth: 160,
+            mx: "auto",
           }}
           noWrap
         >

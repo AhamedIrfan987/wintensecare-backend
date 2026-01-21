@@ -4,7 +4,7 @@ import WhoWeHelp from "./components/whowehelp";
 import HowItWorksSection from "./components/Howitworks";
 import SecurityPage from "./components/security";
 import TechnologyOfCareSection from "./components/products";
-import TestimonialsPage from "./components/testimonial";
+
 import FinalCTA from "./components/finalcta"; 
 import Footer from "./components/footer";
 import Navbar from "./components/navbar"
@@ -22,7 +22,7 @@ export default function Home() {
             <TechnologyOfCareSection />
         <SecurityPage />
    
-       <TestimonialsPage />
+     
        <FinalCTA />
        <Footer />
 

@@ -856,12 +856,12 @@ const spo2StatusColor =
 
           <Grid container spacing={3} alignItems="center">
             <Grid item xs={12} md={5}>
-              <Box sx={{ 
+              <Box>
                 display: "flex", 
                 justifyContent: "center",
                 height: "100%",
                 minHeight: 300 
-              }}>
+             <Box />
                 <StepsDial 
                   totalSteps={totalSteps} 
                   startTime={startTime} 
@@ -877,9 +877,8 @@ const spo2StatusColor =
                 width: "100%" 
               }}>
                 <StepsChart 
-                  hourlyData={hourlyData} 
-                  maxHourly={maxHourly} 
-                />
+                  hourlyData={hourlyData}
+                  maxHourly={maxHourly} weeklyData={[]} maxWeekly={0} range={""}                />
               </Box>
             </Grid>
           </Grid>

@@ -1,21 +1,23 @@
-'use client'
+'use client';
+
 import React from 'react';
 import {
-  Box,
   Container,
   Typography,
   Link,
   IconButton,
-  useTheme,
   Stack,
   Divider,
 } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import {
   Facebook,
   Twitter,
   Instagram,
   LinkedIn,
 } from '@mui/icons-material';
+
+/* ---------------- types ---------------- */
 
 interface FooterProps {
   companyName?: string;
@@ -26,9 +28,69 @@ interface FooterLink {
   href: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ 
-  companyName = "WINTENSCARE" 
-}) => {
+/* ---------------- styled layout ---------------- */
+
+const FooterSection = styled('footer')(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  borderTop: `1px solid ${theme.palette.divider}`,
+  paddingTop: theme.spacing(6),
+  paddingBottom: theme.spacing(4),
+
+  [theme.breakpoints.down('md')]: {
+    paddingTop: theme.spacing(4),
+  },
+}));
+
+const MainRow = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  gap: theme.spacing(6),
+  marginBottom: theme.spacing(4),
+
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column',
+    gap: theme.spacing(4),
+  },
+}));
+
+const CompanyBlock = styled('div')(({ theme }) => ({
+  flex: '1 1 40%',
+  maxWidth: 400,
+}));
+
+const LinksRow = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flex: '1 1 60%',
+  justifyContent: 'space-between',
+  gap: theme.spacing(8),
+
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    gap: theme.spacing(3),
+  },
+}));
+
+const SocialRow = styled('div')({
+  display: 'flex',
+  gap: 8,
+  flexWrap: 'wrap',
+});
+
+const BottomRow = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+}));
+
+/* ---------------- component ---------------- */
+
+const Footer = ({ companyName = 'WINTENSCARE' }: FooterProps) => {
   const theme = useTheme();
 
   const linksColumn1: FooterLink[] = [
@@ -53,112 +115,48 @@ const Footer: React.FC<FooterProps> = ({
   ];
 
   return (
-    <Box
-      component="footer"
-      sx={{
-        backgroundColor: theme.palette.background.paper,
-        borderTop: `1px solid ${theme.palette.divider}`,
-        py: { xs: 4, md: 6 },
-      }}
-    >
+    <FooterSection>
       <Container maxWidth="lg">
-        {/* Main Content Area */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            justifyContent: 'space-between',
-            alignItems: { xs: 'flex-start', md: 'flex-start' },
-            gap: { xs: 4, md: 6 },
-            mb: 4,
-          }}
-        >
-          {/* Company Info */}
-          <Box
-            sx={{
-              flex: { md: '1 1 40%' },
-              maxWidth: { md: '400px' },
-            }}
-          >
-            <Typography 
-              variant="h6" 
+        <MainRow>
+          {/* Company info */}
+          <CompanyBlock>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              color="primary"
               gutterBottom
-              sx={{ 
-                fontWeight: 700,
-                color: theme.palette.primary.main,
-                fontSize: { xs: '1.25rem', md: '1.5rem' }
-              }}
             >
               {companyName}
             </Typography>
-            <Typography 
-              variant="body2" 
-              color="text.secondary"
-              sx={{ 
-                lineHeight: 1.6,
-                fontSize: { xs: '0.875rem', md: '1rem' }
-              }}
-            >
-              We are dedicated to building technology that strengthens human 
+
+            <Typography variant="body2" color="text.secondary" lineHeight={1.6}>
+              We are dedicated to building technology that strengthens human
               connection and empowers healthier lives.
             </Typography>
-          </Box>
+          </CompanyBlock>
 
-          {/* Links Container */}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              gap: { xs: 3, sm: 6, md: 8 },
-              flex: { md: '1 1 60%' },
-              justifyContent: { sm: 'space-between' },
-            }}
-          >
-            {/* Links Column 1 */}
-            <Box>
-              <Typography 
-                variant="subtitle1" 
-                gutterBottom 
-                sx={{ 
-                  fontWeight: 600,
-                  fontSize: '1rem'
-                }}
-              >
-                WINTENSCARE
+          {/* Links */}
+          <LinksRow>
+            <div>
+              <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+                {companyName}
               </Typography>
               <Stack spacing={1.5}>
                 {linksColumn1.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
-                    variant="body2"
+                    underline="hover"
                     color="text.secondary"
-                    sx={{
-                      textDecoration: 'none',
-                      '&:hover': {
-                        color: theme.palette.primary.main,
-                        textDecoration: 'underline',
-                      },
-                      transition: 'color 0.2s ease-in-out',
-                      cursor: 'pointer',
-                    }}
                   >
                     {link.label}
                   </Link>
                 ))}
               </Stack>
-            </Box>
+            </div>
 
-            {/* Links Column 2 */}
-            <Box>
-              <Typography 
-                variant="subtitle1" 
-                gutterBottom 
-                sx={{ 
-                  fontWeight: 600,
-                  fontSize: '1rem'
-                }}
-              >
+            <div>
+              <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                 Legal
               </Typography>
               <Stack spacing={1.5}>
@@ -166,43 +164,20 @@ const Footer: React.FC<FooterProps> = ({
                   <Link
                     key={link.label}
                     href={link.href}
-                    variant="body2"
+                    underline="hover"
                     color="text.secondary"
-                    sx={{
-                      textDecoration: 'none',
-                      '&:hover': {
-                        color: theme.palette.primary.main,
-                        textDecoration: 'underline',
-                      },
-                      transition: 'color 0.2s ease-in-out',
-                      cursor: 'pointer',
-                    }}
                   >
                     {link.label}
                   </Link>
                 ))}
               </Stack>
-            </Box>
+            </div>
 
-            {/* Social Media */}
-            <Box>
-              <Typography 
-                variant="subtitle1" 
-                gutterBottom 
-                sx={{ 
-                  fontWeight: 600,
-                  fontSize: '1rem'
-                }}
-              >
+            <div>
+              <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                 Follow Us
               </Typography>
-              <Box 
-                sx={{ 
-                  display: 'flex', 
-                  gap: 1,
-                  flexWrap: 'wrap'
-                }}
-              >
+              <SocialRow>
                 {socialLinks.map((social) => (
                   <IconButton
                     key={social.label}
@@ -215,11 +190,10 @@ const Footer: React.FC<FooterProps> = ({
                       backgroundColor: theme.palette.action.hover,
                       '&:hover': {
                         backgroundColor: theme.palette.primary.main,
-                        color: 'white',
+                        color: '#fff',
                         transform: 'translateY(-2px)',
-                        boxShadow: 2,
                       },
-                      transition: 'all 0.3s ease-in-out',
+                      transition: 'all 0.25s ease',
                       width: 40,
                       height: 40,
                     }}
@@ -227,66 +201,29 @@ const Footer: React.FC<FooterProps> = ({
                     {social.icon}
                   </IconButton>
                 ))}
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+              </SocialRow>
+            </div>
+          </LinksRow>
+        </MainRow>
 
         <Divider sx={{ my: 3 }} />
 
-        {/* Copyright */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'space-between',
-            alignItems: { xs: 'flex-start', sm: 'center' },
-            gap: 2,
-          }}
-        >
-          <Typography 
-            variant="body2" 
-            color="text.secondary"
-            sx={{ fontSize: '0.875rem' }}
-          >
+        <BottomRow>
+          <Typography variant="body2" color="text.secondary">
             © {new Date().getFullYear()} {companyName}. All rights reserved.
           </Typography>
-          
-          {/* Optional: Additional copyright links */}
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 3,
-            }}
-          >
-            <Link
-              href="/privacy"
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                textDecoration: 'none',
-                '&:hover': { textDecoration: 'underline' },
-                fontSize: '0.875rem'
-              }}
-            >
+
+          <Stack direction="row" spacing={3}>
+            <Link href="/privacy" underline="hover" color="text.secondary">
               Privacy
             </Link>
-            <Link
-              href="/terms"
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                textDecoration: 'none',
-                '&:hover': { textDecoration: 'underline' },
-                fontSize: '0.875rem'
-              }}
-            >
+            <Link href="/terms" underline="hover" color="text.secondary">
               Terms
             </Link>
-          </Box>
-        </Box>
+          </Stack>
+        </BottomRow>
       </Container>
-    </Box>
+    </FooterSection>
   );
 };
 
