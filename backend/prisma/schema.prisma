@@ -18,21 +18,23 @@ model User {
 }
 
 model Device {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   type      String
   userId    String
-  user      User        @relation(fields: [userId], references: [id])
-  telemetry Telemetry[] // ✅ ADD THIS
-  createdAt DateTime    @default(now())
+  createdAt DateTime @default(now())
 
-  // 🔥 NEW MEDICAL VITALS
+  user User @relation(fields: [userId], references: [id])
+
+  telemetry Telemetry[]
+
+  // ECG
+  ecg        ECG[]
   ecgSummaries ECGSummary[]
-  ecg           ECG[]
- // 🔥 ADD THESE
-  spo2Samples  SpO2Sample[]
-  spo2Summary  SpO2Summary[]
 
+  // SpO2
+  spo2Samples SpO2Sample[] @relation("DeviceSpO2Samples")
+ 
 }
 
 model Telemetry {
@@ -63,17 +65,27 @@ model Alert {
 }
 
 
-
 model ECG {
   id           String   @id @default(uuid())
   deviceId     String
-  signal       Float[]
+
+  lead         String   @default("I")
+  unit         String   @default("mV")
   samplingRate Int
+  paperSpeed   Int      @default(25)
+  gain         Int      @default(10)
+
+  signal       Float[]
   durationMs   Int
+  quality      Int      @default(50)
+
   createdAt    DateTime @default(now())
 
   device Device @relation(fields: [deviceId], references: [id])
 }
+
+
+
 
 model ECGSummary {
   id        String   @id @default(uuid())
@@ -93,26 +105,11 @@ model ECGSummary {
 model SpO2Sample {
   id        String   @id @default(uuid())
   deviceId  String
-  value     Int      // 70 – 100 only
-  perfusion Int?     // optional signal quality
+  value     Int
+  perfusion Int?
   createdAt DateTime @default(now())
 
-  device Device @relation(fields: [deviceId], references: [id])
-
-  @@index([deviceId, createdAt])
-}
-
-model SpO2Summary {
-  id        String   @id @default(uuid())
-  deviceId  String
-  window    String   // "5m", "15m", "1h"
-  avg       Int
-  min       Int
-  max       Int
-  drops     Int      // count of < 90 events
-  createdAt DateTime @default(now())
-
-  device Device @relation(fields: [deviceId], references: [id])
+  device Device @relation("DeviceSpO2Samples", fields: [deviceId], references: [id])
 
   @@index([deviceId, createdAt])
 }

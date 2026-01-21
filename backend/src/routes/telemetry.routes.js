@@ -1,16 +1,17 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
-const authMiddleware = require('../middlewares/auth.middleware');
-
-const telemetryController = require('../controllers/telemetry.controller');
+import authMiddleware from "../middlewares/auth.middleware.js";
 
 
-
-router.post('/', authMiddleware, telemetryController.createTelemetry);
-router.get('/', authMiddleware, telemetryController.getTelemetry);
-router.get('/history', authMiddleware, telemetryController.getTelemetryHistory);
+import { createTelemetry, getTelemetry, getTelemetryHistory } from '../controllers/telemetry.controller.js';
 
 
 
-module.exports = router;
+router.post('/', authMiddleware, createTelemetry);
+router.get('/', authMiddleware, getTelemetry);
+router.get('/history', authMiddleware, getTelemetryHistory);
+
+
+
+export default router;

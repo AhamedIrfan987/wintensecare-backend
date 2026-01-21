@@ -1,3 +1,3 @@
 const devices = [];
 
-module.exports = devices;
+export default devices;

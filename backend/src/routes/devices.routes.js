@@ -1,14 +1,15 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import authMiddleware from '../middlewares/auth.middleware.js';
+import {
+  createDevice,
+  getDevices,
+  deleteDevice
+} from '../controllers/devices.controller.js';
 
-const authMiddleware = require('../middlewares/auth.middleware');
-const devicesController = require('../controllers/devices.controller');
+const router = Router();
 
-console.log('DEVICES CONTROLLER:', devicesController);
-console.log('AUTH MIDDLEWARE:', authMiddleware);
+router.post('/', authMiddleware, createDevice);
+router.get('/', authMiddleware, getDevices);
+router.delete('/:id', authMiddleware, deleteDevice);
 
-router.post('/', authMiddleware, devicesController.createDevice);
-router.get('/', authMiddleware, devicesController.getDevices);
-router.delete('/:id', authMiddleware, devicesController.deleteDevice);
-
-module.exports = router;
+export default router;

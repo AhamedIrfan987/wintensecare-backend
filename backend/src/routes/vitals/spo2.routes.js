@@ -4,12 +4,12 @@ import {
   getSpO2Raw,
   getSpO2Summary
 } from "../../controllers/vitals/spo2.controller.js";
-import auth from "../../middlewares/auth.middleware.js";
+import authMiddleware from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/ingest", auth, ingestSpO2);
-router.get("/raw", auth, getSpO2Raw);
-router.get("/summary", auth, getSpO2Summary);
+router.post("/", authMiddleware, ingestSpO2);
+router.get("/raw", authMiddleware, getSpO2Raw);
+router.get("/summary", authMiddleware, getSpO2Summary);
 
 export default router;

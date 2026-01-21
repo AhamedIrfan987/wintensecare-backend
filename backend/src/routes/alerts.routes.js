@@ -1,10 +1,13 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import authMiddleware from '../middlewares/auth.middleware.js';
+import {
+  getAlerts,
+  acknowledgeAlert
+} from '../controllers/alerts.controller.js';
 
-const authMiddleware = require('../middlewares/auth.middleware');
-const alertsController = require('../controllers/alerts.controller');
+const router = Router();
 
-router.get('/', authMiddleware, alertsController.getAlerts);
-router.post('/:id/ack', authMiddleware, alertsController.acknowledgeAlert);
+router.get('/', authMiddleware, getAlerts);
+router.post('/:id/ack', authMiddleware, acknowledgeAlert);
 
-module.exports = router;
+export default router;

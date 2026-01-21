@@ -1,4 +1,4 @@
-exports.login = async (req, res) => {
+export async function login(req, res) {
   const { email, password } = req.body;
 
   const user = await prisma.user.findUnique({
@@ -21,4 +21,4 @@ exports.login = async (req, res) => {
   );
 
   res.json({ accessToken: token });
-};
+}

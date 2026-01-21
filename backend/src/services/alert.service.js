@@ -1,9 +1,10 @@
-const prisma = require('../config/prisma');
+import prisma from '../config/prisma.js';
+
 
 /**
  * Evaluate alerts after telemetry insert
  */
-async function evaluateAlerts(deviceId, userId) {
+export const evaluateAlerts = async (deviceId, userId) => {
   // Fetch last 2 minutes telemetry
   const since = new Date(Date.now() - 2 * 60 * 1000);
 
@@ -79,7 +80,3 @@ async function createAlertOnce(data) {
 
   await prisma.alert.create({ data });
 }
-
-module.exports = {
-  evaluateAlerts,
-};

@@ -1,6 +1,6 @@
-const prisma = require('../config/prisma');
+import prisma from '../config/prisma.js';
 
-async function createDevice(req, res) {
+export async function createDevice(req, res) {
   const { name } = req.body;
 
   if (!name) {
@@ -18,7 +18,7 @@ async function createDevice(req, res) {
   return res.status(201).json(device);
 }
 
-async function getDevices(req, res) {
+export async function getDevices(req, res) {
   const devices = await prisma.device.findMany({
     where: { userId: req.user.id },
   });
@@ -26,7 +26,7 @@ async function getDevices(req, res) {
   return res.json(devices);
 }
 
-async function deleteDevice(req, res) {
+export async function deleteDevice(req, res) {
   const { id } = req.params;
 
   const device = await prisma.device.findFirst({
@@ -43,9 +43,3 @@ async function deleteDevice(req, res) {
 
   return res.json({ message: 'Device removed' });
 }
-
-module.exports = {
-  createDevice,
-  getDevices,
-  deleteDevice,
-};
