@@ -1,16 +1,16 @@
-import { apiRequest } from './index';
+import { api } from "./api";
 
 export interface Alert {
   id: string;
   deviceId: string;
-  severity: 'CRITICAL' | 'WARNING' | 'INFO';
+  severity: "CRITICAL" | "WARNING" | "INFO";
   message?: string;
 }
 
 export const getAlerts = () =>
-  apiRequest<Alert[]>('/alerts');
+  api<Alert[]>("/alerts");
 
 export const acknowledgeAlert = (alertId: string) =>
-  apiRequest<void>(`/alerts/${alertId}/ack`, {
-    method: 'POST',
+  api<void>(`/alerts/${alertId}/ack`, {
+    method: "POST",
   });

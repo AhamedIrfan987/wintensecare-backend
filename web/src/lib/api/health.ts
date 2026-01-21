@@ -1,8 +1,8 @@
-import { apiRequest } from './index';
+import { api } from './api';
 
 export interface HealthResponse {
   status: string;
 }
 
 export const healthCheck = () =>
-  apiRequest<HealthResponse>('/health');
+  api<HealthResponse>('/health');
