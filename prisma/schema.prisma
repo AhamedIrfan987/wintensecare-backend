@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String?  @unique
+  phone     String?  @unique
+  password  String
+  role      String   @default("user")
+  devices   Device[]
+  createdAt DateTime @default(now())
+}
+
+model Device {
+  id        String      @id @default(uuid())
+  name      String
+  type      String
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  telemetry Telemetry[] // ✅ ADD THIS
+  createdAt DateTime    @default(now())
+
+  // 🔥 NEW MEDICAL VITALS
+  ecgSummaries ECGSummary[]
+  ecg           ECG[]
+ // 🔥 ADD THESE
+  spo2Samples  SpO2Sample[]
+  spo2Summary  SpO2Summary[]
+
+}
+
+model Telemetry {
+  id       String @id @default(uuid())
+  deviceId String
+  device   Device @relation(fields: [deviceId], references: [id])
+
+  heartRate Int
+  steps     Int
+  battery   Int
+
+  createdAt DateTime @default(now())
+}
+
+model Alert {
+  id       String @id @default(uuid())
+  userId   String
+  deviceId String
+
+  metric   String // HEART_RATE, BATTERY, OFFLINE
+  value    Int
+  severity String // INFO, WARNING, CRITICAL
+  message  String
+
+  acknowledged Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
+
+
+
+model ECG {
+  id           String   @id @default(uuid())
+  deviceId     String
+  signal       Float[]
+  samplingRate Int
+  durationMs   Int
+  createdAt    DateTime @default(now())
+
+  device Device @relation(fields: [deviceId], references: [id])
+}
+
+model ECGSummary {
+  id        String   @id @default(uuid())
+  deviceId  String
+  window    String
+  avgHR     Int
+  minHR     Int
+  maxHR     Int
+  rrVar     Float
+  pvcCount  Int
+  quality   Int
+  createdAt DateTime @default(now())
+
+  device Device @relation(fields: [deviceId], references: [id])
+}
+
+model SpO2Sample {
+  id        String   @id @default(uuid())
+  deviceId  String
+  value     Int      // 70 – 100 only
+  perfusion Int?     // optional signal quality
+  createdAt DateTime @default(now())
+
+  device Device @relation(fields: [deviceId], references: [id])
+
+  @@index([deviceId, createdAt])
+}
+
+model SpO2Summary {
+  id        String   @id @default(uuid())
+  deviceId  String
+  window    String   // "5m", "15m", "1h"
+  avg       Int
+  min       Int
+  max       Int
+  drops     Int      // count of < 90 events
+  createdAt DateTime @default(now())
+
+  device Device @relation(fields: [deviceId], references: [id])
+
+  @@index([deviceId, createdAt])
+}
